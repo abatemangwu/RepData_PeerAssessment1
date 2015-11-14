@@ -30,7 +30,7 @@ stepsPreDay <- data %>%
   )
 ```
 
-###Make a histogram of the total number of steps taken each day.
+####Make a histogram of the total number of steps taken each day.
 
 
 ```r
@@ -51,7 +51,7 @@ hist(
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
-###Calculate and report the mean and median of the total number of steps taken per day.
+####Calculate and report the mean and median of the total number of steps taken per day.
 
 
 ```r
@@ -61,7 +61,7 @@ medianTotalStepsPerDay <- median(stepsPreDay$total,na.rm = TRUE)
 sumTotalStepsPerDay <- sum(stepsPreDay$total,na.rm = TRUE)
 ```
 
-####Mean Total Steps Per Day
+#####Mean Total Steps Per Day
 
 
 ```r
@@ -73,7 +73,7 @@ print(meanTotalStepPerDay)
 ## [1] 10766.19
 ```
 
-####Median Total Steps per Day
+#####Median Total Steps per Day
 
 
 ```r
@@ -86,7 +86,7 @@ print(medianTotalStepsPerDay)
 ```
 
 ##What is the average daily activity pattern?
-###Make a time series plot...
+####Make a time series plot...
 
 
 ```r
@@ -105,9 +105,9 @@ plot(
 
 ![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
 
-###Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+####Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-####Interval with maximum average number of steps.
+#####Interval with maximum average number of steps.
 
 
 ```r
@@ -122,9 +122,9 @@ print(aggdata[which.max(aggdata$steps),])
 
 ##Imputing missing values
 
-###Calculate and report the total number of missing values in the dataset.
+####Calculate and report the total number of missing values in the dataset.
 
-####Total Number of Missing Values (NA)
+#####Total Number of Missing Values (NA)
 
 
 ```r
@@ -136,11 +136,11 @@ print(sum(is.na(data)))
 ## [1] 2304
 ```
 
-###Devise a strategy for filling in all of the missing values...
+####Devise a strategy for filling in all of the missing values...
 
-####Missing values (NA) are imputed by calculating the mean for aggregated Interval values.
+Missing values (NA) are imputed by calculating the mean for aggregated Interval values.
 
-###Create a new dataset that includes imputed missing values.
+####Create a new dataset that includes imputed missing values.
 
 
 ```r
@@ -166,7 +166,7 @@ if (!exists("dataImp")) {
 }
 ```
 
-###Make a histogram of the total number of steps taken each day.
+####Make a histogram of the total number of steps taken each day.
 
 
 ```r
@@ -206,7 +206,7 @@ medianTotalStepsPerDayImp <- median(stepsPreDayImp$total,na.rm = TRUE)
 sumTotalStepsPerDayImp <- sum(stepsPreDayImp$total,na.rm = TRUE)
 ```
 
-####Mean - Total Steps Per Day (imputed missin values)
+#####Mean - Total Steps Per Day (imputed missin values)
 
 ```r
 echo=TRUE
@@ -216,7 +216,7 @@ print(meanTotalStepPerDayImp)
 ```
 ## [1] 10766.19
 ```
-####Median - Total Steps per Day (imputed missin values)
+#####Median - Total Steps per Day (imputed missin values)
 
 ```r
 echo=TRUE
@@ -229,7 +229,7 @@ print(medianTotalStepsPerDayImp)
 
 ##Are there differences in activity patterns between weekdays and weekends?
 
-###Create a new factor variable in the dataset with two levels – "weekday" and "weekend".
+####Create a new factor variable in the dataset with two levels – "weekday" and "weekend".
 
 ```r
 echo = TRUE
@@ -243,9 +243,9 @@ meanStepsPerDayByIntervalImp <-
   summarise(meanStepVal = mean(steps,rm.na = TRUE))
 ```
 
-###Make a panel plot containing a time series plot...
+####Make a panel plot containing a time series plot...
 
-####the average number of steps taken, averaged across all weekday days or weekend days. 
+*the average number of steps taken, averaged across all weekday days or weekend days.*
 
 
 ```r
@@ -273,7 +273,7 @@ print(plotd)
 
 ![](PA1_template_files/figure-html/unnamed-chunk-16-1.png) 
 
-####(cont.) *Are there differences in activity patterns between weekdays and weekends?*
+#####(cont.) *Are there differences in activity patterns between weekdays and weekends?*
 
 Yes, in general a higher level of activity is observed on weekends, particularly in the intervals between 1000 and 2000.
 Visual inspection of the plot (Average Number of Steps By Interval) indicates that weekend activity is more consistent throughout the day.
