@@ -23,6 +23,7 @@ data$date <- as.Date(data$date, "%Y-%m-%d")
 ```
 
 ##What is mean total number of steps taken per day?
+***
 
 ```{r}
 suppressMessages(library(dplyr))
@@ -59,26 +60,26 @@ meanTotalStepPerDay <- mean(stepsPreDay$total,na.rm = TRUE)
 medianTotalStepsPerDay <- median(stepsPreDay$total,na.rm = TRUE)
 sumTotalStepsPerDay <- sum(stepsPreDay$total,na.rm = TRUE)
 
-gbd <- data.table(Date = stepsPreDay$date, Total.Steps = stepsPreDay$total)
+gbd <- data.table(Date = stepsPreDay$date, Total.Steps = stepsPreDay$total, Mean = stepsPreDay$meanVal, Median = stepsPreDay$medianVal)
 tb <- kable(gbd,caption = "Steps Per Day - Totals", format = 'markdown')
 ```
 
-```{r}
+####Steps Per Day
+#####Totals per Day, Mean per Day, Median per Day
 
-results = 'asis'
-message = FALSE 
+```{r}
 print(tb)
 
 ```
 
-#####Mean Total Steps Per Day
+#####Mean Value Total Steps (all days)
 
 ```{r}
 echo = TRUE
 print(meanTotalStepPerDay)
 ```
 
-#####Median Total Steps per Day
+#####Median Value Total Steps (all days)
 
 ```{r}
 echo = TRUE
@@ -86,6 +87,9 @@ print(medianTotalStepsPerDay)
 ```
 
 ##What is the average daily activity pattern?
+
+***
+
 ####Make a time series plot...
 
 ```{r}
@@ -104,12 +108,15 @@ plot(
 
 ####Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
+#####5-minute interval with maximum number of steps
 ```{r}
 echo = TRUE
 print(aggdata[which.max(aggdata$steps),])
 ```
 
 ##Imputing missing values
+
+***
 
 ####Calculate and report the total number of missing values in the dataset.
 
@@ -122,9 +129,10 @@ print(sum(is.na(data)))
 
 ####Devise a strategy for filling in all of the missing values...
 
-**Missing values (NA) are imputed by calculating the mean for aggregated Interval values.**
+>Missing values (NA) are imputed by calculating the MEAN of aggregated Interval values across all observartions.
 
-####
+***
+
 ####Create a new dataset that includes imputed missing values.
 
 ```{r}
@@ -196,6 +204,8 @@ print(medianTotalStepsPerDayImp)
 
 ##Are there differences in activity patterns between weekdays and weekends?
 
+***
+
 ####Create a new factor variable in the dataset with two levels – "weekday" and "weekend".
 ```{r}
 echo = TRUE
@@ -238,9 +248,7 @@ print(plotd)
 
 #####(cont.) *Are there differences in activity patterns between weekdays and weekends?*
 
-Yes, in general a higher level of activity is observed on weekends, particularly in the intervals between 1000 and 2000.
+>Yes, in general a higher level of activity is observed on weekends, particularly in the intervals between 1000 and 2000.
 Visual inspection of the plot (Average Number of Steps By Interval) indicates that weekend activity is more consistent throughout the day.
-
 Weekend and weekday plots each show a peek in activity between intervals 750 and 1000. The peek is more pronounced on weekdays - perhaps reflecting activity related to going to work or school? A decrease in activity on weekdays between the 1000 and 2000 interval is observered.
-
 An increase in activity is observed on weekdays in the interval between 500 and 750 - a time period of approx. 2 hours, suggesting that people wake up much earlier on weekday.
