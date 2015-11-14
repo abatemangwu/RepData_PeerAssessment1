@@ -107,8 +107,6 @@ plot(
 
 ####Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
-#####Interval with maximum average number of steps.
-
 
 ```r
 echo = TRUE
