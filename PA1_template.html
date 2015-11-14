@@ -130,8 +130,6 @@ medianTotalStepsPerDay &lt;-<span class="st"> </span><span class="kw">median</sp
 sumTotalStepsPerDay &lt;-<span class="st"> </span><span class="kw">sum</span>(stepsPreDay$total,<span class="dt">na.rm =</span> <span class="ot">TRUE</span>)
 
 gbd &lt;-<span class="st"> </span><span class="kw">data.table</span>(<span class="dt">Date =</span> stepsPreDay$date, <span class="dt">Total.Steps =</span> stepsPreDay$total)
-<span class="co"># pretty table</span>
-
 <span class="kw">kable</span>(gbd,<span class="dt">caption =</span> <span class="st">&quot;Steps Per Day - Totals&quot;</span>)</code></pre>
 <table>
 <caption>Steps Per Day - Totals</caption>

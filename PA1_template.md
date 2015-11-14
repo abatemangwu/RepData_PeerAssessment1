@@ -50,6 +50,7 @@ hist(
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
 ####Calculate and report the mean and median of the total number of steps taken per day.
+
 <style type="text/css">
 .table {width: 40%;}
 .table caption {color: #000;font-size: 1.5em;text-align: center;}
@@ -64,8 +65,6 @@ medianTotalStepsPerDay <- median(stepsPreDay$total,na.rm = TRUE)
 sumTotalStepsPerDay <- sum(stepsPreDay$total,na.rm = TRUE)
 
 gbd <- data.table(Date = stepsPreDay$date, Total.Steps = stepsPreDay$total)
-# pretty table
-
 kable(gbd,caption = "Steps Per Day - Totals")
 ```
 
