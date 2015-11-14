@@ -22,6 +22,8 @@
 #Are there differences in activity patterns between weekdays and week- ends?
 
 ```r
+library(knitr)
+library(dplyr)
 echo = TRUE
 weekdayT <- weekdays(dataImp$date,abbreviate = FALSE)
 weekdayList <- c("Monday","Tuesday","Wednesday","Thursday","Friday")
@@ -54,9 +56,9 @@ plotd <-
     par.strip.text = list(col = "white", font = 2),
     layout = (c(1,2))
   )
-  png("MYGREATPLOT.png")
+
 print(plotd)
-dev.off()
+
 ```
 #Are there differences in activity patterns between weekdays and week- ends?
 # Yes, on weekends people are more active in general, espacally in the interal between 1000 and 2000.
