@@ -6,7 +6,6 @@ output:
   html_document:
     highlight: tango
     keep_md: yes
-    theme: cosmo
 ---
 
 ##Loading and preprocessing the data.
@@ -39,8 +38,6 @@ stepsPreDay <- data %>%
 
 ```{r}
 echo = TRUE
-countUni = length(unique(stepsPreDay$total,incomparables = FALSE))
-countUni = (countUni - 1)
 hist(
   stepsPreDay$total,
   main = "Histogram: Steps Per Day \n(NA's included)",
@@ -54,12 +51,23 @@ hist(
 ```
 
 ####Calculate and report the mean and median of the total number of steps taken per day.
+<style type="text/css">
+.table {width: 40%;}
+.table caption {color: #000;font-size: 1.5em;text-align: center;}
+</style>
 
 ```{r}
 echo = TRUE
+suppressMessages(library(data.table))
 meanTotalStepPerDay <- mean(stepsPreDay$total,na.rm = TRUE)
 medianTotalStepsPerDay <- median(stepsPreDay$total,na.rm = TRUE)
 sumTotalStepsPerDay <- sum(stepsPreDay$total,na.rm = TRUE)
+
+gbd <- data.table(Date = stepsPreDay$date, Total.Steps = stepsPreDay$total)
+# pretty table
+
+kable(gbd,caption = "Steps Per Day - Totals")
+
 ```
 
 #####Mean Total Steps Per Day
@@ -113,8 +121,9 @@ print(sum(is.na(data)))
 
 ####Devise a strategy for filling in all of the missing values...
 
-Missing values (NA) are imputed by calculating the mean for aggregated Interval values.
+**Missing values (NA) are imputed by calculating the mean for aggregated Interval values.**
 
+####
 ####Create a new dataset that includes imputed missing values.
 
 ```{r}
@@ -123,7 +132,6 @@ echo = TRUE
 if (!exists("dataImp")) {
   dataImp <- data
   ct <- nrow(dataImp)
-  x = 0
   for (i in 1:ct) {
     if (is.na(dataImp$steps[i])) {
       t = filter(aggdata, dataImp$interval[i] == aggdata$interval)
@@ -152,8 +160,6 @@ stepsPreDayImp <- dataImp %>%
     medianVal =  median(steps)
   )
 
-countUniImp = length(unique(stepsPreDay$total,incomparables = FALSE))
-countUniImp = (countUniImp  - 1)
 hist(
   stepsPreDayImp$total,
   main = "Histogram: Steps Per Day \n(imputed missing values)",
@@ -176,12 +182,12 @@ medianTotalStepsPerDayImp <- median(stepsPreDayImp$total,na.rm = TRUE)
 sumTotalStepsPerDayImp <- sum(stepsPreDayImp$total,na.rm = TRUE)
 ```
 
-#####Mean - Total Steps Per Day (imputed missin values)
+#####Mean - Total Steps Per Day (imputed missing values)
 ```{r}
 echo=TRUE
 print(meanTotalStepPerDayImp)
 ```
-#####Median - Total Steps per Day (imputed missin values)
+#####Median - Total Steps per Day (imputed missing values)
 ```{r}
 echo=TRUE
 print(medianTotalStepsPerDayImp)

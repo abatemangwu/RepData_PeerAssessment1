@@ -23,6 +23,9 @@ stepsPreDay <- data %>%
     total = sum(steps), meanVal = mean(steps,rm.na = TRUE), medianVal =  median(steps)
   )
 
+gbd <- data.table(Date = stepsPreDay$date, Total.Steps = stepsPreDay$total)
+
+
 #Make a histogram of the total number of steps taken each day
 countUni = length(unique(stepsPreDay$total,incomparables = FALSE))
 countUni = (countUni - 1)
@@ -36,9 +39,9 @@ hist(
   xlim = c(0,25000),
   ylim = c(0,25)
 )
-#png("figures/)
-# Calculate and report the mean and median of the total number of steps taken per day
 
+# Calculate and report the mean and median of the total number of steps taken per day
+library(data.table)
 meanTotalStepPerDay <- mean(stepsPreDay$total,na.rm = TRUE)
 medianTotalStepsPerDay <- median(stepsPreDay$total,na.rm = TRUE)
 sumTotalStepsPerDay <- sum(stepsPreDay$total,na.rm = TRUE)
@@ -49,6 +52,8 @@ print("Mean Total Steps Per Day")
 print(meanTotalStepPerDay)
 print("Median Total Steps per Day")
 print(medianTotalStepsPerDay)
+
+tabl <-  data.table(Date = stepsPreDay$date, Total = stepsPreDay$total, Mean = stepsPreDay$meanVal, Median = stepsPreDay$medianVal)
 
 # Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis)
 # and the average number of steps taken, averaged across all days (y-axis)
@@ -175,9 +180,9 @@ plotd <-
     par.strip.text = list(col = "white", font = 2),
     layout = (c(1,2))
   )
-png("figures/MyTestFigure.png")
+
 print(plotd)
-dev.off()
+
 
 #Are there differences in activity patterns between weekdays and week- ends?
 # Yes, on weekends people are more active in general, espacally in the interal between 1000 and 2000.

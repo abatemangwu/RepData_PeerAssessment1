@@ -35,8 +35,6 @@ stepsPreDay <- data %>%
 
 ```r
 echo = TRUE
-countUni = length(unique(stepsPreDay$total,incomparables = FALSE))
-countUni = (countUni - 1)
 hist(
   stepsPreDay$total,
   main = "Histogram: Steps Per Day \n(NA's included)",
@@ -52,14 +50,92 @@ hist(
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
 
 ####Calculate and report the mean and median of the total number of steps taken per day.
+<style type="text/css">
+.table {width: 40%;}
+.table caption {color: #000;font-size: 1.5em;text-align: center;}
+</style>
 
 
 ```r
 echo = TRUE
+suppressMessages(library(data.table))
 meanTotalStepPerDay <- mean(stepsPreDay$total,na.rm = TRUE)
 medianTotalStepsPerDay <- median(stepsPreDay$total,na.rm = TRUE)
 sumTotalStepsPerDay <- sum(stepsPreDay$total,na.rm = TRUE)
+
+gbd <- data.table(Date = stepsPreDay$date, Total.Steps = stepsPreDay$total)
+# pretty table
+
+kable(gbd,caption = "Steps Per Day - Totals")
 ```
+
+
+
+Table: Steps Per Day - Totals
+
+Date          Total.Steps
+-----------  ------------
+2012-10-01             NA
+2012-10-02            126
+2012-10-03          11352
+2012-10-04          12116
+2012-10-05          13294
+2012-10-06          15420
+2012-10-07          11015
+2012-10-08             NA
+2012-10-09          12811
+2012-10-10           9900
+2012-10-11          10304
+2012-10-12          17382
+2012-10-13          12426
+2012-10-14          15098
+2012-10-15          10139
+2012-10-16          15084
+2012-10-17          13452
+2012-10-18          10056
+2012-10-19          11829
+2012-10-20          10395
+2012-10-21           8821
+2012-10-22          13460
+2012-10-23           8918
+2012-10-24           8355
+2012-10-25           2492
+2012-10-26           6778
+2012-10-27          10119
+2012-10-28          11458
+2012-10-29           5018
+2012-10-30           9819
+2012-10-31          15414
+2012-11-01             NA
+2012-11-02          10600
+2012-11-03          10571
+2012-11-04             NA
+2012-11-05          10439
+2012-11-06           8334
+2012-11-07          12883
+2012-11-08           3219
+2012-11-09             NA
+2012-11-10             NA
+2012-11-11          12608
+2012-11-12          10765
+2012-11-13           7336
+2012-11-14             NA
+2012-11-15             41
+2012-11-16           5441
+2012-11-17          14339
+2012-11-18          15110
+2012-11-19           8841
+2012-11-20           4472
+2012-11-21          12787
+2012-11-22          20427
+2012-11-23          21194
+2012-11-24          14478
+2012-11-25          11834
+2012-11-26          11162
+2012-11-27          13646
+2012-11-28          10183
+2012-11-29           7047
+2012-11-30             NA
 
 #####Mean Total Steps Per Day
 
@@ -136,8 +212,9 @@ print(sum(is.na(data)))
 
 ####Devise a strategy for filling in all of the missing values...
 
-Missing values (NA) are imputed by calculating the mean for aggregated Interval values.
+**Missing values (NA) are imputed by calculating the mean for aggregated Interval values.**
 
+####
 ####Create a new dataset that includes imputed missing values.
 
 
@@ -147,7 +224,6 @@ echo = TRUE
 if (!exists("dataImp")) {
   dataImp <- data
   ct <- nrow(dataImp)
-  x = 0
   for (i in 1:ct) {
     if (is.na(dataImp$steps[i])) {
       t = filter(aggdata, dataImp$interval[i] == aggdata$interval)
@@ -177,8 +253,6 @@ stepsPreDayImp <- dataImp %>%
     medianVal =  median(steps)
   )
 
-countUniImp = length(unique(stepsPreDay$total,incomparables = FALSE))
-countUniImp = (countUniImp  - 1)
 hist(
   stepsPreDayImp$total,
   main = "Histogram: Steps Per Day \n(imputed missing values)",
@@ -204,7 +278,7 @@ medianTotalStepsPerDayImp <- median(stepsPreDayImp$total,na.rm = TRUE)
 sumTotalStepsPerDayImp <- sum(stepsPreDayImp$total,na.rm = TRUE)
 ```
 
-#####Mean - Total Steps Per Day (imputed missin values)
+#####Mean - Total Steps Per Day (imputed missing values)
 
 ```r
 echo=TRUE
@@ -214,7 +288,7 @@ print(meanTotalStepPerDayImp)
 ```
 ## [1] 10766.19
 ```
-#####Median - Total Steps per Day (imputed missin values)
+#####Median - Total Steps per Day (imputed missing values)
 
 ```r
 echo=TRUE
