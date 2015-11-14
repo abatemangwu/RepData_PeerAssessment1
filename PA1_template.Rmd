@@ -7,10 +7,6 @@ output:
     highlight: tango
     keep_md: yes
 ---
-<style>
-.table {width: 40%;}
-.table caption {color: #000;font-size: 1.5em;text-align: center;}
-</style>
 
 ##Loading and preprocessing the data.
 ```{r}
@@ -64,7 +60,14 @@ medianTotalStepsPerDay <- median(stepsPreDay$total,na.rm = TRUE)
 sumTotalStepsPerDay <- sum(stepsPreDay$total,na.rm = TRUE)
 
 gbd <- data.table(Date = stepsPreDay$date, Total.Steps = stepsPreDay$total)
-kable(gbd,caption = "Steps Per Day - Totals")
+tb <- kable(gbd,caption = "Steps Per Day - Totals", format = 'markdown')
+```
+
+```{r}
+
+results = 'asis'
+message = FALSE 
+print(tb)
 
 ```
 
