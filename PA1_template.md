@@ -1,4 +1,11 @@
-# Reproducible Research: Peer Assessment 1
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    highlight: tango
+    keep_md: yes
+    theme: cosmo
+---
 
 
 ## Loading and preprocessing the data
@@ -56,11 +63,12 @@ plotd <-
     par.strip.text = list(col = "white", font = 2),
     layout = (c(1,2))
   )
-png("figures/MyTestFigure.png")
+
 print(plotd)
-dev.off()
+
 
 ```
+
 #Are there differences in activity patterns between weekdays and week- ends?
 # Yes, on weekends people are more active in general, espacally in the interal between 1000 and 2000.
 # Weekend activity is more consistent throughtout the day.
