@@ -15,7 +15,7 @@ data$date <- as.Date(data$date, "%Y-%m-%d")
 #Calculate the total number of steps taken per day
 #
 
-
+#What is mean total number of steps taken per day?
 library(dplyr)
 stepsPreDay <- data %>%
   group_by(date) %>%
@@ -36,7 +36,7 @@ hist(
   xlim = c(0,25000),
   ylim = c(0,25)
 )
-
+#png("figures/)
 # Calculate and report the mean and median of the total number of steps taken per day
 
 meanTotalStepPerDay <- mean(stepsPreDay$total,na.rm = TRUE)
@@ -150,7 +150,7 @@ dataImp$dayType <-
   as.factor(ifelse(weekdayT %in% weekdayList,"weekday","weekend"))
 
 
-p <- meanStepsPerDayByIntervalImp <- dataImp %>%
+meanStepsPerDayByIntervalImp <- dataImp %>%
   group_by(dayType,interval) %>%
   summarise(meanStepVal = mean(steps,rm.na = TRUE))
 

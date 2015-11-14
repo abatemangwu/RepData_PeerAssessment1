@@ -1,5 +1,7 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
+author: "Anthony Bateman"
+date: "Nov. 14, 2015"
 output: 
   html_document:
     highlight: tango
@@ -7,54 +9,217 @@ output:
     theme: cosmo
 ---
 
-
-## Loading and preprocessing the data
-```r
-
+##Loading and preprocessing the data.
+```{r}
+echo = TRUE
+suppressMessages(library(knitr))
+if (!file.exists("activity.csv")) {
+  unzip ("activity.zip", exdir = "./")
+}
+data <-
+  read.csv(
+    "activity.csv", header = TRUE,sep = ",", na.strings = "NA", stringsAsFactors = FALSE
+  )
+data$date <- as.Date(data$date, "%Y-%m-%d")
 ```
 
-## What is mean total number of steps taken per day?
+##What is mean total number of steps taken per day?
 
+```{r}
+suppressMessages(library(dplyr))
+echo = TRUE
+stepsPreDay <- data %>%
+  group_by(date) %>%
+  summarise(
+    total = sum(steps), meanVal = mean(steps,rm.na = TRUE), medianVal =  median(steps)
+  )
+```
 
+###Make a histogram of the total number of steps taken each day.
 
-## What is the average daily activity pattern?
+```{r}
+echo = TRUE
+countUni = length(unique(stepsPreDay$total,incomparables = FALSE))
+countUni = (countUni - 1)
+hist(
+  stepsPreDay$total,
+  main = "Histogram: Steps Per Day \n(NA's included)",
+  xlab = "Steps Per Day",
+  las = 1,col = "orange",
+  border = "orange",
+  breaks = 8,
+  xlim = c(0,25000),
+  ylim = c(0,25)
+)
+```
 
+###Calculate and report the mean and median of the total number of steps taken per day.
 
+```{r}
+echo = TRUE
+meanTotalStepPerDay <- mean(stepsPreDay$total,na.rm = TRUE)
+medianTotalStepsPerDay <- median(stepsPreDay$total,na.rm = TRUE)
+sumTotalStepsPerDay <- sum(stepsPreDay$total,na.rm = TRUE)
+```
 
-## Imputing missing values
+####Mean Total Steps Per Day
 
+```{r}
+echo = TRUE
+print(meanTotalStepPerDay)
+```
 
+####Median Total Steps per Day
 
-## Are there differences in activity patterns between weekdays and weekends?
-#Are there differences in activity patterns between weekdays and week- ends?
+```{r}
+echo = TRUE
+print(medianTotalStepsPerDay)
+```
 
-```r
-library(knitr)
-library(dplyr)
+##What is the average daily activity pattern?
+###Make a time series plot...
+
+```{r}
+echo = TRUE
+aggdata <- aggregate(steps ~ interval, data, mean)
+plot(
+  aggdata,
+  type = 'l',
+  main = "Time Series: Steps by Interval",
+  xlab = "Intervals - 5 Minute",
+  ylab = "Average Number of Steps",
+  las = 1,
+  xlim = c(0,2500)
+)
+```
+
+###Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+
+####Interval with maximum average number of steps.
+
+```{r}
+echo = TRUE
+print(aggdata[which.max(aggdata$steps),])
+```
+
+##Imputing missing values
+
+###Calculate and report the total number of missing values in the dataset.
+
+####Total Number of Missing Values (NA)
+
+```{r}
+echo = TRUE
+print(sum(is.na(data)))
+```
+
+###Devise a strategy for filling in all of the missing values...
+
+####Missing values (NA) are imputed by calculating the mean for aggregated Interval values.
+
+###Create a new dataset that includes imputed missing values.
+
+```{r}
+# This is sort of slow, but I couldn't figure out a fancier way, Sorry.
+echo = TRUE
+if (!exists("dataImp")) {
+  dataImp <- data
+  ct <- nrow(dataImp)
+  x = 0
+  for (i in 1:ct) {
+    if (is.na(dataImp$steps[i])) {
+      t = filter(aggdata, dataImp$interval[i] == aggdata$interval)
+      tt = t[2]
+      dataImp$stepsImp[i] = as.numeric(tt)
+    }
+    else
+      dataImp$stepsImp[i] =  as.numeric(dataImp$steps[i])
+  }
+  #drop the unimputed steps col, juggle and rename to match the originaal data set.
+  dataImp <- subset(dataImp, select = -c(steps))
+  dataImp <- dataImp[,c(3,1,2)]
+  names(dataImp)[names(dataImp) == 'stepsImp'] <- 'steps'
+}
+```
+
+###Make a histogram of the total number of steps taken each day.
+
+```{r}
+echo=TRUE
+stepsPreDayImp <- dataImp %>%
+  group_by(date) %>%
+  summarise(
+    total = sum(steps),
+    meanVal = mean(steps,rm.na = TRUE),
+    medianVal =  median(steps)
+  )
+
+countUniImp = length(unique(stepsPreDay$total,incomparables = FALSE))
+countUniImp = (countUniImp  - 1)
+hist(
+  stepsPreDayImp$total,
+  main = "Histogram: Steps Per Day \n(imputed missing values)",
+  xlab = "Steps Per Day",
+  las = 1,
+  col = "blue",
+  border = "blue",
+  breaks = 8,
+  xlim = c(0,25000),
+  ylim = c(0,25)
+)
+```
+
+####Calculate and report the mean and median total number of steps taken per day.
+
+```{r}
+echo=TRUE
+meanTotalStepPerDayImp <- mean(stepsPreDayImp$total,na.rm = TRUE)
+medianTotalStepsPerDayImp <- median(stepsPreDayImp$total,na.rm = TRUE)
+sumTotalStepsPerDayImp <- sum(stepsPreDayImp$total,na.rm = TRUE)
+```
+
+####Mean - Total Steps Per Day (imputed missin values)
+```{r}
+echo=TRUE
+print(meanTotalStepPerDayImp)
+```
+####Median - Total Steps per Day (imputed missin values)
+```{r}
+echo=TRUE
+print(medianTotalStepsPerDayImp)
+```
+
+##Are there differences in activity patterns between weekdays and weekends?
+
+###Create a new factor variable in the dataset with two levels – "weekday" and "weekend".
+```{r}
 echo = TRUE
 weekdayT <- weekdays(dataImp$date,abbreviate = FALSE)
 weekdayList <- c("Monday","Tuesday","Wednesday","Thursday","Friday")
-dataImp$dayType <-
-  as.factor(ifelse(weekdayT %in% weekdayList,"weekday","weekend"))
+dataImp$dayType <- as.factor(ifelse(weekdayT %in% weekdayList,"weekday","weekend"))
 
-
-p <- meanStepsPerDayByIntervalImp <- dataImp %>%
-  group_by(dayType,interval) %>%
+meanStepsPerDayByIntervalImp <- 
+  dataImp %>% 
+  group_by(dayType,interval) %>% 
   summarise(meanStepVal = mean(steps,rm.na = TRUE))
+```
 
-library(lattice)
-library(RColorBrewer)
+###Make a panel plot containing a time series plot...
+
+####the average number of steps taken, averaged across all weekday days or weekend days. 
+
+```{r}
+suppressMessages(library(lattice))
+suppressMessages(library(RColorBrewer))
 colorsTheme <- brewer.pal(6,"Blues")
-
 my.theme <- list(
   superpose.polygon = list(col = colorsTheme[2:5], border = "transparent"),
   strip.background = list(col = colorsTheme[6]),
-  strip.border = list(col = colorsTheme[6])
-)
+  strip.border = list(col = colorsTheme[6]))
+
 plotd <-
   xyplot(
-    meanStepsPerDayByIntervalImp$meanStepVal ~ meanStepsPerDayByIntervalImp$interval |
-      meanStepsPerDayByIntervalImp$dayType,
+    meanStepsPerDayByIntervalImp$meanStepVal ~ meanStepsPerDayByIntervalImp$interval | meanStepsPerDayByIntervalImp$dayType,
     type = "l",
     main = "Average Number of Steps By Interval\n(Weekend vs Weekdays)",
     ylab = "Number of Steps",
@@ -63,18 +228,14 @@ plotd <-
     par.strip.text = list(col = "white", font = 2),
     layout = (c(1,2))
   )
-
 print(plotd)
-
-
 ```
 
-#Are there differences in activity patterns between weekdays and week- ends?
-# Yes, on weekends people are more active in general, espacally in the interal between 1000 and 2000.
-# Weekend activity is more consistent throughtout the day.
-# On both weekends and weekdays there is a peek in  activity between intervals 750 and 1000.
-# The peek is more pronounced on weekdays - perhaps as people are going to work/shcool?
-# People are less active on weekdays in the interal between 1000 and 2000 - perhaps because they are sitting still at work/shcool?
-# Activity on weekdays is greater in the interal between 500 and 750 - a time perion of appox 2 hours, sugesting that people wake up much earlier on weekday.
+####(cont.) *Are there differences in activity patterns between weekdays and weekends?*
 
+Yes, in general a higher level of activity is observed on weekends, particularly in the intervals between 1000 and 2000.
+Visual inspection of the plot (Average Number of Steps By Interval) indicates that weekend activity is more consistent throughout the day.
 
+Weekend and weekday plots each show a peek in activity between intervals 750 and 1000. The peek is more pronounced on weekdays - perhaps reflecting activity related to going to work or school? A decrease in activity on weekdays between the 1000 and 2000 interval is observered.
+
+An increase in activity is observed on weekdays in the interval between 500 and 750 - a time period of approx. 2 hours, suggesting that people wake up much earlier on weekday.
