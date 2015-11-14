@@ -128,8 +128,9 @@ plotd &lt;-
     <span class="dt">par.strip.text =</span> <span class="kw">list</span>(<span class="dt">col =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">font =</span> <span class="dv">2</span>),
     <span class="dt">layout =</span> (<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
   )
-
-<span class="kw">print</span>(plotd)</code></pre>
+<span class="kw">png</span>(<span class="st">&quot;figures/MyTestFigure.png&quot;</span>)
+<span class="kw">print</span>(plotd)
+<span class="kw">dev.off</span>()</code></pre>
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-week--ends-1" class="section level1">
 <h1>Are there differences in activity patterns between weekdays and week- ends?</h1>

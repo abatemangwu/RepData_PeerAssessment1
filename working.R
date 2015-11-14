@@ -175,7 +175,9 @@ plotd <-
     par.strip.text = list(col = "white", font = 2),
     layout = (c(1,2))
   )
+png("figures/MyTestFigure.png")
 print(plotd)
+dev.off()
 
 #Are there differences in activity patterns between weekdays and week- ends?
 # Yes, on weekends people are more active in general, espacally in the interal between 1000 and 2000.

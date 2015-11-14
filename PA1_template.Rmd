@@ -63,8 +63,9 @@ plotd <-
     par.strip.text = list(col = "white", font = 2),
     layout = (c(1,2))
   )
-
+png("figures/MyTestFigure.png")
 print(plotd)
+dev.off()
 
 ```
 #Are there differences in activity patterns between weekdays and week- ends?
